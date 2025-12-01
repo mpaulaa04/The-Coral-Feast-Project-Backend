@@ -1,0 +1,148 @@
+/* Estilos para los slots de acceso rápido */
+.quick-access-slot {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  transition: transform 0.2s, opacity 0.2s;
+  opacity: 0.4;
+}
+
+.quick-access-slot.has-item {
+  opacity: 1;
+}
+
+.quick-access-slot.has-item:hover {
+  transform: scale(1.08);
+}
+
+.quick-access-slot:not(.has-item) {
+  cursor: default;
+  pointer-events: none;
+}
+
+.quick-access-bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  user-select: none;
+}
+
+.quick-access-item {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 75%;
+  height: 75%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.quick-access-item[draggable="true"] {
+  cursor: grab;
+  pointer-events: auto;
+}
+
+.quick-access-item[draggable="true"]:active {
+  cursor: grabbing;
+  opacity: 0.7;
+}
+
+/* Herramientas de regulación clickeables pero no arrastrables */
+.quick-access-item.regulation-tool {
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.quick-access-item.regulation-tool:hover {
+  opacity: 0.8;
+}
+
+
+.quick-access-count {
+  position: absolute;
+  bottom: 2px;
+  right: 4px;
+  background: #ff9900;
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 5px;
+  border-radius: 8px;
+  min-width: 18px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  line-height: 1;
+}
+
+.tool-usage-card {
+  width: 100%;
+  min-width: 150px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: linear-gradient(160deg, rgba(9, 34, 53, 0.85), rgba(20, 69, 103, 0.85));
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(4px);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tool-usage-title {
+  font-family: "LexendDeca", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #f4fafc;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.tool-usage-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.tool-usage-row:last-child {
+  border-bottom: none;
+}
+
+.tool-usage-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1 1 auto;
+}
+
+.tool-usage-icon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
+}
+
+.tool-usage-label {
+  color: #eaf6ff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.tool-usage-count {
+  min-width: 32px;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #0a1f33;
+  background: #9be7ff;
+  padding: 4px 8px;
+  border-radius: 999px;
+  box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.25);
+}

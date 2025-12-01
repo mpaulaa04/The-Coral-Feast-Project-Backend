@@ -20,8 +20,6 @@ return new class extends Migration
             $table->string('pond_egg_dead_image_path')->nullable();
             $table->string('pond_adult_dead_image_path')->nullable();
             $table->foreignId('fish_id')->nullable()->constrained('fish')->nullOnDelete();
-            $table->foreignId('plant_id')->nullable();
-            $table->foreignId('supplement_id')->nullable();
             $table->json('metadata')->nullable();
             $table->timestamps();
         });
