@@ -25,6 +25,7 @@ class AuthController extends Controller
 
         $user->ensureWalletExists();
         $user->ensureDefaultPond();
+        $user->recordDailySession();
 
         return response()->json([
             'message' => 'Login successful.',

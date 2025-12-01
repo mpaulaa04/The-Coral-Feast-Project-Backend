@@ -9,12 +9,32 @@ trait SerializesPonds
 {
     protected function serializeSlot(PondSlot $slot): array
     {
+        $this->expirePlantIfNeeded($slot);
+
         $slot->loadMissing(['fish', 'status', 'plant']);
         $slot->refreshStageProgress();
 
         $fish = $slot->fish;
         $status = $slot->status;
         $plant = $slot->plant;
+        $effectState = $slot->plant_effect_state ?? [];
+
+        if ($effectState instanceof \ArrayAccess) {
+            $effectState = (array) $effectState;
+        }
+
+        if (! is_array($effectState)) {
+            $effectState = [];
+        }
+
+        $plantEffect = null;
+
+        if (! empty($effectState) || $slot->plant_effect_expires_at) {
+            $plantEffect = [
+                'state' => ! empty($effectState) ? $effectState : null,
+                'expires_at' => optional($slot->plant_effect_expires_at)->toIso8601String(),
+            ];
+        }
 
         return [
             'id' => $slot->id,
@@ -59,6 +79,7 @@ trait SerializesPonds
                 'metadata' => (array) $plant->metadata,
                 'placed_at' => optional($slot->plant_placed_at)->toIso8601String(),
             ] : null,
+            'plant_effect' => $plantEffect,
             'stage_started_at' => optional($slot->stage_started_at)->toIso8601String(),
             'stage_progress_seconds' => $slot->stage_progress_seconds,
             'stage_duration_seconds' => $slot->stage_duration_seconds,
@@ -69,6 +90,79 @@ trait SerializesPonds
             'created_at' => optional($slot->created_at)->toIso8601String(),
             'updated_at' => optional($slot->updated_at)->toIso8601String(),
         ];
+    }
+
+    protected function expirePlantIfNeeded(PondSlot $slot): void
+    {
+        $maxLifetime = max(0, (int) $this->plantEffectMaxLifetimeSeconds());
+        $expiresAt = $slot->plant_effect_expires_at;
+        $placedAt = $slot->plant_placed_at;
+
+        $deadline = null;
+
+        if ($expiresAt) {
+            $deadline = clone $expiresAt;
+        }
+
+        if ($maxLifetime > 0 && $placedAt) {
+            $maxDeadline = (clone $placedAt)->addSeconds($maxLifetime);
+
+            if (! $deadline || $deadline->gt($maxDeadline)) {
+                $deadline = $maxDeadline;
+            }
+        }
+
+        if (! $deadline) {
+            return;
+        }
+
+        $updates = [];
+
+        if (! $expiresAt || ! $expiresAt->equalTo($deadline)) {
+            $updates['plant_effect_expires_at'] = $deadline;
+        }
+
+        $state = $slot->plant_effect_state;
+        if ($maxLifetime > 0) {
+            if (is_array($state)) {
+                $currentLifetime = (int) ($state['lifetime_seconds'] ?? 0);
+
+                if ($currentLifetime <= 0 || $currentLifetime > $maxLifetime) {
+                    $state['lifetime_seconds'] = $maxLifetime;
+                    $updates['plant_effect_state'] = $state;
+                }
+            } elseif ($slot->plant_id) {
+                $updates['plant_effect_state'] = ['lifetime_seconds' => $maxLifetime];
+            }
+        }
+
+        if ($updates) {
+            $slot->forceFill($updates)->save();
+        }
+
+        if (now()->lt($deadline)) {
+            return;
+        }
+
+        $slot->forceFill([
+            'plant_id' => null,
+            'plant_placed_at' => null,
+            'plant_effect_state' => null,
+            'plant_effect_expires_at' => null,
+        ])->save();
+
+        $slot->unsetRelation('plant');
+    }
+
+    protected function plantEffectMaxLifetimeSeconds(): int
+    {
+        $constantQualifiedName = static::class . '::MAX_PLANT_EFFECT_DURATION_SECONDS';
+
+        if (defined($constantQualifiedName)) {
+            return (int) constant($constantQualifiedName);
+        }
+
+        return 30;
     }
 
     protected function serializePond(Pond $pond): array
@@ -89,6 +183,7 @@ trait SerializesPonds
             'user_id' => $pond->user_id,
             'name' => $pond->name,
             'status' => $pond->status,
+            'current_day' => (int) ($pond->current_day ?? 1),
             'slot_summary' => [
                 'total' => $slots->count(),
                 'available' => $slots->where('status.name', 'empty')->count(),

@@ -17,6 +17,8 @@ class PondSlotController extends Controller
 {
     use SerializesPonds;
 
+    private const MAX_PLANT_EFFECT_DURATION_SECONDS = 30;
+
     private const STATUS_FLOW = ['empty', 'egg', 'juvenile', 'adult', 'dead'];
 
     /**
@@ -119,11 +121,49 @@ class PondSlotController extends Controller
             'plant_id' => ['required', 'exists:plants,id'],
         ]);
 
+        $slot->loadMissing(['status', 'fish']);
+
+        $statusName = strtolower($slot->status?->name ?? 'empty');
+
+        if (! $slot->fish || in_array($statusName, ['empty', 'dead'], true)) {
+            return response()->json([
+                'message' => 'Necesitas un pez vivo en este espacio antes de plantar.',
+            ], 422);
+        }
+
+        if ($statusName === 'egg') {
+            return response()->json([
+                'message' => 'No puedes aplicar plantas sobre un huevo. Espera a que nazca el pez.',
+            ], 422);
+        }
+
         $plant = Plant::findOrFail($data['plant_id']);
+
+        $metadata = (array) $plant->metadata;
+        $effects = (array) ($metadata['effects'] ?? []);
+
+        $maxLifetime = max(0, (int) $this->plantEffectMaxLifetimeSeconds());
+        $rawLifetime = (int) ($effects['lifetime_seconds'] ?? 0);
+        $effectiveLifetime = $rawLifetime > 0
+            ? min($rawLifetime, $maxLifetime)
+            : $maxLifetime;
+
+        $now = now();
+        $expiresAt = $effectiveLifetime > 0
+            ? (clone $now)->addSeconds($effectiveLifetime)
+            : null;
+
+        if ($effectiveLifetime > 0) {
+            $effects['lifetime_seconds'] = $effectiveLifetime;
+        } else {
+            unset($effects['lifetime_seconds']);
+        }
 
         $slot->forceFill([
             'plant_id' => $plant->id,
-            'plant_placed_at' => now(),
+            'plant_placed_at' => $now,
+            'plant_effect_state' => ! empty($effects) ? $effects : null,
+            'plant_effect_expires_at' => $expiresAt,
         ])->save();
 
         $slot->refresh();
@@ -266,12 +306,22 @@ class PondSlotController extends Controller
                 'last_oxygenated_at' => null,
                 'last_ph_adjusted_at' => null,
                 'last_cleaned_at' => null,
+                'plant_id' => null,
+                'plant_placed_at' => null,
+                'plant_effect_state' => null,
+                'plant_effect_expires_at' => null,
             ]);
         } elseif ($target === 'dead') {
-            $updates['health'] = 0;
-            $updates['stage_started_at'] = now();
-            $updates['stage_progress_seconds'] = 0;
-            $updates['stage_duration_seconds'] = 0;
+            $updates = array_merge($updates, [
+                'health' => 0,
+                'stage_started_at' => now(),
+                'stage_progress_seconds' => 0,
+                'stage_duration_seconds' => 0,
+                'plant_id' => null,
+                'plant_placed_at' => null,
+                'plant_effect_state' => null,
+                'plant_effect_expires_at' => null,
+            ]);
         } else {
             $updates['stage_started_at'] = now();
             $updates['stage_progress_seconds'] = 0;
@@ -340,6 +390,10 @@ class PondSlotController extends Controller
             'stage_started_at' => now(),
             'stage_progress_seconds' => 0,
             'stage_duration_seconds' => 0,
+            'plant_id' => null,
+            'plant_placed_at' => null,
+            'plant_effect_state' => null,
+            'plant_effect_expires_at' => null,
         ])->save();
 
         return response()->json([

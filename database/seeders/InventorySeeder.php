@@ -65,6 +65,11 @@ class InventorySeeder extends Seeder
                 'oxygen_bonus' => 12,
                 'ph_bonus' => 4,
                 'health_regeneration' => 3,
+                'effects' => [
+                    'requires_fish' => true,
+                    'growth_speed_multiplier' => 2,
+                    'lifetime_seconds' => 30,
+                ],
             ],
             [
                 'slug' => 'plant-anubias',
@@ -74,6 +79,11 @@ class InventorySeeder extends Seeder
                 'oxygen_bonus' => 8,
                 'ph_bonus' => 6,
                 'health_regeneration' => 2,
+                'effects' => [
+                    'requires_fish' => true,
+                    'oxygen_protection' => true,
+                    'lifetime_seconds' => 30,
+                ],
             ],
             [
                 'slug' => 'plant-musgo-java',
@@ -83,10 +93,17 @@ class InventorySeeder extends Seeder
                 'oxygen_bonus' => 10,
                 'ph_bonus' => 5,
                 'health_regeneration' => 4,
+                'effects' => [
+                    'requires_fish' => true,
+                    'temperature_protection' => true,
+                    'lifetime_seconds' => 30,
+                ],
             ],
         ];
 
         foreach ($plants as $plant) {
+            $effects = $plant['effects'] ?? [];
+
             $plantModel = Plant::updateOrCreate(
                 ['slug' => $plant['slug']],
                 [
@@ -102,6 +119,7 @@ class InventorySeeder extends Seeder
                             'ph' => $plant['ph_bonus'],
                             'health_regeneration' => $plant['health_regeneration'],
                         ],
+                        'effects' => $effects,
                     ],
                 ]
             );
@@ -123,6 +141,7 @@ class InventorySeeder extends Seeder
                             'ph' => $plant['ph_bonus'],
                             'health_regeneration' => $plant['health_regeneration'],
                         ],
+                        'effects' => $effects,
                     ],
                 ]
             );

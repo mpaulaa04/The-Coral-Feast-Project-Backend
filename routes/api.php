@@ -6,12 +6,16 @@ use App\Http\Controllers\Api\FishController;
 use App\Http\Controllers\Api\InventoryItemController;
 use App\Http\Controllers\Api\MarketListingController;
 use App\Http\Controllers\Api\NotificationController;
+use App\Http\Controllers\Api\NotificationTypeController;
 use App\Http\Controllers\Api\PondController;
 use App\Http\Controllers\Api\PondSlotController;
 use App\Http\Controllers\Api\PondSlotStatusController;
 use App\Http\Controllers\Api\UserInventoryController;
 use App\Http\Controllers\Api\UserMissionController;
+use App\Http\Controllers\Api\ToolUsageController;
 use App\Http\Controllers\Api\WalletController;
+use App\Http\Controllers\Api\StatsController;
+use App\Http\Controllers\Api\TutorialController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 
@@ -35,6 +39,8 @@ Route::prefix('v1')->group(function () {
     Route::get('fish/{fish}', [FishController::class, 'show']);
 
     Route::get('inventory-items', [InventoryItemController::class, 'index']);
+
+    Route::get('notification-types', [NotificationTypeController::class, 'index']);
 
     Route::get('market/listings/double-offer', [MarketListingController::class, 'showDoubleOffer']);
     Route::post('market/listings/double-offer/activate', [MarketListingController::class, 'activateDoubleOffer']);
@@ -62,10 +68,19 @@ Route::prefix('v1')->group(function () {
     Route::post('ponds/{pond}/slots/{slot}/issues/{issue}/resolve', [PondSlotController::class, 'resolveIssue']);
 
     Route::get('users/{user}/wallet', [WalletController::class, 'show']);
+    Route::patch('users/{user}/wallet', [WalletController::class, 'update']);
     Route::get('users/{user}/inventory', [UserInventoryController::class, 'index']);
     Route::post('users/{user}/inventory', [UserInventoryController::class, 'store']);
     Route::put('users/{user}/inventory/{item}', [UserInventoryController::class, 'update']);
     Route::get('users/{user}/notifications', [NotificationController::class, 'index']);
     Route::post('users/{user}/notifications', [NotificationController::class, 'store']);
     Route::post('users/{user}/notifications/mark-all-read', [NotificationController::class, 'markAllRead']);
+
+    Route::get('users/{user}/tool-usage', [ToolUsageController::class, 'index']);
+    Route::post('users/{user}/tool-usage', [ToolUsageController::class, 'store']);
+
+    Route::get('stats', [StatsController::class, 'index']);
+
+    Route::get('users/{user}/tutorial', [TutorialController::class, 'show']);
+    Route::patch('users/{user}/tutorial', [TutorialController::class, 'update']);
 });

@@ -16,6 +16,7 @@ class Pond extends Model
         'user_id',
         'name',
         'status',
+        'current_day',
     ];
 
     public function user()

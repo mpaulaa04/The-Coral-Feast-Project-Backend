@@ -14,6 +14,9 @@ class NotificationType extends Model
         'slug',
         'name',
         'default_title',
+        'background_color',
+        'text_color',
+        'border_color',
     ];
 
     public function notifications(): HasMany

@@ -44,12 +44,14 @@ class PondController extends Controller
             'user_id' => ['required', 'exists:users,id'],
             'name' => ['required', 'string', 'max:255'],
             'status' => ['nullable', 'string', 'max:50'],
+            'current_day' => ['nullable', 'integer', 'min:1'],
         ]);
 
         $pond = Pond::create([
             'user_id' => $data['user_id'],
             'name' => $data['name'],
             'status' => $data['status'] ?? 'active',
+            'current_day' => $data['current_day'] ?? 1,
         ]);
 
         return response()->json([
@@ -73,6 +75,7 @@ class PondController extends Controller
         $data = $request->validate([
             'name' => ['sometimes', 'string', 'max:255'],
             'status' => ['sometimes', 'string', 'max:50'],
+            'current_day' => ['sometimes', 'integer', 'min:1'],
         ]);
 
         $pond->fill($data)->save();

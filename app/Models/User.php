@@ -4,9 +4,9 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\InventoryItem;
-use App\Models\InventoryItemCategory;
 use App\Models\Pond;
 use App\Models\PondSlotStatus;
+use App\Models\ToolUsage;
 use App\Models\UserInventory;
 use App\Models\Wallet;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
 
 class User extends Authenticatable
 {
@@ -64,6 +65,9 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'last_played_at' => 'datetime',
+            'days_played' => 'integer',
+            'tutorial_completed' => 'boolean',
         ];
     }
 
@@ -80,6 +84,11 @@ class User extends Authenticatable
     public function inventory(): HasMany
     {
         return $this->hasMany(UserInventory::class);
+    }
+
+    public function toolUsages(): HasMany
+    {
+        return $this->hasMany(ToolUsage::class);
     }
 
     public function inventoryItems(): BelongsToMany
@@ -113,6 +122,7 @@ class User extends Authenticatable
             $pond = $this->ponds()->create([
                 'name' => $this->defaultPondName(),
                 'status' => 'active',
+                'current_day' => 1,
             ]);
         }
 
@@ -144,5 +154,25 @@ class User extends Authenticatable
         return $this->farm_name
             ? sprintf('%s Pond', $this->farm_name)
             : 'Main Pond';
+    }
+
+    public function recordDailySession(?Carbon $reference = null): void
+    {
+        $reference = $reference ? $reference->copy() : Carbon::now();
+
+        $this->refresh();
+
+        $lastPlayed = $this->last_played_at ? $this->last_played_at->copy() : null;
+        $shouldIncrement = ! $lastPlayed || ! $lastPlayed->isSameDay($reference);
+
+        $attributes = [
+            'last_played_at' => $reference,
+        ];
+
+        if ($shouldIncrement) {
+            $attributes['days_played'] = max(0, (int) $this->days_played) + 1;
+        }
+
+        $this->forceFill($attributes)->save();
     }
 }
