@@ -8,18 +8,14 @@ return new class extends Migration
 {
     public function up(): void
     {
-        if (Schema::hasTable('plants')) {
-            return;
-        }
-
-        Schema::create('plants', function (Blueprint $table): void {
+        Schema::create('supplements', function (Blueprint $table): void {
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
             $table->string('image_path')->nullable();
-            $table->unsignedTinyInteger('oxygen_bonus')->default(0);
-            $table->unsignedTinyInteger('ph_bonus')->default(0);
-            $table->unsignedTinyInteger('health_regeneration')->default(0);
+            $table->unsignedTinyInteger('health_boost')->default(0);
+            $table->boolean('hunger_reset')->default(false);
+            $table->unsignedTinyInteger('feeding_limit_bonus')->default(0);
             $table->json('metadata')->nullable();
             $table->timestamps();
         });
@@ -27,8 +23,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::disableForeignKeyConstraints();
-        Schema::dropIfExists('plants');
-        Schema::enableForeignKeyConstraints();
+        Schema::dropIfExists('supplements');
     }
 };
