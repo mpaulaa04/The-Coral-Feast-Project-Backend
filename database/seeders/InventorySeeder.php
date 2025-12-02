@@ -73,9 +73,9 @@ class InventorySeeder extends Seeder
             ],
             [
                 'slug' => 'plant-anubias',
-                'name' => 'Anubias',
+                'name' => 'Elodea',
                 'price' => 95,
-                'image' => './assets/img/planta2.png',
+                'image' => './assets/img/elodea.svg',
                 'oxygen_bonus' => 8,
                 'ph_bonus' => 6,
                 'health_regeneration' => 2,
@@ -87,9 +87,9 @@ class InventorySeeder extends Seeder
             ],
             [
                 'slug' => 'plant-musgo-java',
-                'name' => 'Musgo Java',
+                'name' => 'Water Lettuce',
                 'price' => 120,
-                'image' => './assets/img/planta3.png',
+                'image' => './assets/img/waterLettuce.svg',
                 'oxygen_bonus' => 10,
                 'ph_bonus' => 5,
                 'health_regeneration' => 4,
