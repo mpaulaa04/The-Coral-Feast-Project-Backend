@@ -10,9 +10,14 @@ return new class extends Migration
     {
         Schema::create('notification_types', function (Blueprint $table) {
             $table->id();
-            $table->string('slug')->unique();
-            $table->string('name');
-            $table->string('default_title')->nullable();
+            $table->string('slug')
+                ->unique()
+                ->comment('Unique slug identifier for the notification type');
+            $table->string('name')
+                ->comment('Name of the notification type');
+            $table->string('default_title')
+                ->nullable()
+                ->comment('Default title for notifications of this type');
             $table->timestamps();
         });
     }

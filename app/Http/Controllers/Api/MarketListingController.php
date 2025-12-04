@@ -1,4 +1,9 @@
 <?php
+/**
+ * Class MarketListingController
+ *
+ * Handles API requests related to market listings and double offer management.
+ */
 
 namespace App\Http\Controllers\Api;
 
@@ -11,6 +16,12 @@ use Illuminate\Http\Request;
 
 class MarketListingController extends Controller
 {
+    /**
+     * Display the current double offer listing.
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function showDoubleOffer(Request $request): JsonResponse
     {
         $listing = $this->resolveDoubleOfferListing(true);
@@ -20,6 +31,12 @@ class MarketListingController extends Controller
         ]);
     }
 
+    /**
+     * Activate a double offer listing with a multiplier and duration.
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function activateDoubleOffer(Request $request): JsonResponse
     {
         $data = $request->validate([
@@ -57,6 +74,12 @@ class MarketListingController extends Controller
         ]);
     }
 
+    /**
+     * Deactivate the current double offer listing.
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function deactivateDoubleOffer(Request $request): JsonResponse
     {
         $listing = $this->resolveDoubleOfferListing();

@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('inventory_item_categories', function (Blueprint $table): void {
             $table->id();
-            $table->string('name');
+            $table->string('name')->comment('Name of the inventory item category');
             $table->timestamps();
         });
     }

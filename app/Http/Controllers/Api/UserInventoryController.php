@@ -1,4 +1,9 @@
 <?php
+/**
+ * Class UserInventoryController
+ *
+ * Handles API requests related to user inventory management.
+ */
 
 namespace App\Http\Controllers\Api;
 
@@ -12,6 +17,13 @@ use Illuminate\Support\Facades\DB;
 
 class UserInventoryController extends Controller
 {
+    /**
+     * Display a listing of inventory records for a user.
+     *
+     * @param Request $request
+     * @param User $user
+     * @return JsonResponse
+     */
     public function index(Request $request, User $user): JsonResponse
     {
         $this->authorizeUser($request, $user);
@@ -26,6 +38,13 @@ class UserInventoryController extends Controller
         ]);
     }
 
+    /**
+     * Store new inventory records for a user.
+     *
+     * @param Request $request
+     * @param User $user
+     * @return JsonResponse
+     */
     public function store(Request $request, User $user): JsonResponse
     {
         $this->authorizeUser($request, $user);
@@ -66,6 +85,14 @@ class UserInventoryController extends Controller
         ], 201);
     }
 
+    /**
+     * Update an inventory record for a user.
+     *
+     * @param Request $request
+     * @param User $user
+     * @param InventoryItem $item
+     * @return JsonResponse
+     */
     public function update(Request $request, User $user, InventoryItem $item): JsonResponse
     {
         $this->authorizeUser($request, $user);

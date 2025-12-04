@@ -1,4 +1,9 @@
 <?php
+/**
+ * Class InventoryItemController
+ *
+ * Handles API requests related to inventory items.
+ */
 
 namespace App\Http\Controllers\Api;
 
@@ -9,6 +14,11 @@ use Illuminate\Http\JsonResponse;
 
 class InventoryItemController extends Controller
 {
+    /**
+     * Display a listing of inventory items with related data.
+     *
+     * @return JsonResponse
+     */
     public function index(): JsonResponse
     {
         try {

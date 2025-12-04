@@ -1,4 +1,9 @@
 <?php
+/**
+ * Class NotificationController
+ *
+ * Handles API requests related to user notifications.
+ */
 
 namespace App\Http\Controllers\Api;
 
@@ -57,6 +62,13 @@ class NotificationController extends Controller
 
     private const DEFAULT_TYPE_SLUG = 'default';
 
+    /**
+     * Display a listing of notifications for a user.
+     *
+     * @param User $user
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function index(User $user, Request $request): JsonResponse
     {
         $limit = (int) $request->integer('limit', 10);
@@ -86,6 +98,13 @@ class NotificationController extends Controller
         ]);
     }
 
+    /**
+     * Store a newly created notification for a user.
+     *
+     * @param User $user
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function store(User $user, Request $request): JsonResponse
     {
         $validated = $request->validate([
@@ -152,6 +171,12 @@ class NotificationController extends Controller
         ], 201);
     }
 
+    /**
+     * Mark all notifications as read for a user.
+     *
+     * @param User $user
+     * @return JsonResponse
+     */
     public function markAllRead(User $user): JsonResponse
     {
         Notification::query()

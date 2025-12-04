@@ -1,4 +1,14 @@
 <?php
+/**
+ * Class TransactionType
+ *
+ * Represents a type of wallet transaction in the system.
+ *
+ * @property int $id
+ * @property string $transaction Name of the transaction type
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|TransactionType whereTransaction($value)
+ */
 
 namespace App\Models;
 

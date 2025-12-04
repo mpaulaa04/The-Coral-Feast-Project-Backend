@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Class MarketListingStatusSeeder
+ *
+ * Seeds market listing status types and initializes
+ * the default "double_offer" market listing entry.
+ */
 namespace Database\Seeders;
 
 use App\Models\MarketListing;
@@ -8,8 +13,14 @@ use Illuminate\Database\Seeder;
 
 class MarketListingStatusSeeder extends Seeder
 {
+    /**
+     * Run the market listing status seeds.
+     *
+     * @return void
+     */
     public function run(): void
     {
+        // Seed available listing statuses.
         $statuses = [
             ['slug' => 'inactive', 'label' => 'Inactive'],
             ['slug' => 'active', 'label' => 'Active'],
@@ -22,13 +33,13 @@ class MarketListingStatusSeeder extends Seeder
                 ['label' => $status['label']]
             );
         }
-
+ // Get inactive status for default listing setup.
         $inactiveStatus = MarketListingStatus::where('slug', 'inactive')->first();
 
         if (! $inactiveStatus) {
             return;
         }
-
+// Seed or update the default "double_offer" listing.
         MarketListing::updateOrCreate(
             ['type' => 'double_offer'],
             [

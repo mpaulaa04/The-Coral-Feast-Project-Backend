@@ -1,4 +1,16 @@
 <?php
+/**
+ * Class InventoryItemCategory
+ *
+ * Represents an inventory item category.
+ *
+ * @property int $id
+ * @property string $name Name of the category
+ * @property string $slug Unique slug for the category
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|InventoryItemCategory whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|InventoryItemCategory whereSlug($value)
+ */
 
 namespace App\Models;
 

@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('mission_user', function (Blueprint $table): void {
-            $table->unsignedTinyInteger('current_level')->default(1)->after('progress');
+            $table->unsignedTinyInteger('current_level')->default(1)->after('progress')->comment('Current mission tier for multi-stage missions.');
         });
     }
 

@@ -12,8 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->unsignedInteger('days_played')->default(0);
-            $table->timestampTz('last_played_at')->nullable();
+            $table->unsignedInteger('days_played')
+                ->default(0)
+                ->comment('Tracks the total number of days the user has played');
+            $table->timestampTz('last_played_at')
+                ->nullable()
+                ->comment('Stores the last time the user played');
         });
     }
 

@@ -1,4 +1,9 @@
 <?php
+/**
+ * Class ToolUsageController
+ *
+ * Handles API requests related to user tool usage statistics.
+ */
 
 namespace App\Http\Controllers\Api;
 
@@ -10,6 +15,12 @@ use Illuminate\Http\Request;
 
 class ToolUsageController extends Controller
 {
+    /**
+     * Display a listing of tool usage statistics for a user.
+     *
+     * @param User $user
+     * @return JsonResponse
+     */
     public function index(User $user): JsonResponse
     {
         $records = $user->toolUsages()
@@ -33,6 +44,13 @@ class ToolUsageController extends Controller
         return response()->json(['data' => $data]);
     }
 
+    /**
+     * Store or update tool usage statistics for a user.
+     *
+     * @param Request $request
+     * @param User $user
+     * @return JsonResponse
+     */
     public function store(Request $request, User $user): JsonResponse
     {
         $validated = $request->validate([

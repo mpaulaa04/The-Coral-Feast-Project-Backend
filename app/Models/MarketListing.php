@@ -1,4 +1,23 @@
 <?php
+/**
+ * Class MarketListing
+ *
+ * Represents a market listing in the system.
+ *
+ * @property int $id
+ * @property string $type Type of the listing
+ * @property int $market_listing_status_id Status ID of the listing
+ * @property int $plants_id Associated plant ID
+ * @property float $price Price of the listing
+ * @property float $multiplier Multiplier value
+ * @property CarbonInterface $starts_at Start date and time
+ * @property CarbonInterface $ends_at End date and time
+ * @property array $payload Additional data
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|MarketListing whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|MarketListing whereMarketListingStatusId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|MarketListing wherePlantsId($value)
+ */
 
 namespace App\Models;
 

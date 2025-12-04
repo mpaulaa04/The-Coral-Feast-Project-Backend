@@ -10,9 +10,15 @@ return new class extends Migration
     {
         Schema::create('ponds', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->string('name');
-            $table->string('status')->default('active');
+            $table->foreignId('user_id')
+                ->constrained()
+                ->cascadeOnDelete()
+                ->comment('References the user who owns the pond');
+            $table->string('name')
+                ->comment('Name of the pond');
+            $table->string('status')
+                ->default('active')
+                ->comment('Current status of the pond');
             $table->timestamps();
         });
     }

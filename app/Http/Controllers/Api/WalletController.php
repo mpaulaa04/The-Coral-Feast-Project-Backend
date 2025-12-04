@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * Class WalletController
+ *
+ * Handles API requests related to user wallet management and transactions.
+ */
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
@@ -13,6 +17,13 @@ use Illuminate\Support\Facades\DB;
 
 class WalletController extends Controller
 {
+      /**
+     * Display a user's wallet details, optionally including recent transactions.
+     *
+     * @param User $user
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function show(User $user, Request $request): JsonResponse
     {
         $wallet = $user->wallet()->firstOrCreate([], [
@@ -42,7 +53,13 @@ class WalletController extends Controller
 
         return response()->json(['data' => $data]);
     }
-
+/**
+     * Update a user's wallet balance and register the corresponding transaction.
+     *
+     * @param User $user
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function update(User $user, Request $request): JsonResponse
     {
         $payload = $request->validate([
@@ -99,7 +116,10 @@ class WalletController extends Controller
         ]);
     }
 
-    /**
+     /**
+     * Serialize wallet model into a consistent API response format.
+     *
+     * @param Wallet $wallet
      * @return array<string, mixed>
      */
     private function serializeWallet(Wallet $wallet): array

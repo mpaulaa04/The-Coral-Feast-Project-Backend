@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Class DatabaseSeeder
+ *
+ * Seeds the application's core data including users, ponds,
+ * missions, inventory items, statuses, and wallet information.
+ */
 namespace Database\Seeders;
 
 use App\Models\User;
@@ -12,12 +17,16 @@ class DatabaseSeeder extends Seeder
     use WithoutModelEvents;
 
     /**
-     * Seed the application's database.
+     * Run the database seeds.
+     *
+     * @return void
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
+  // User::factory(10)->create();
+ // Create or update the default testing user.
+ // This allows immediate access to game entities during development.
+       
         User::updateOrCreate(
             ['email' => 'test@example.com'],
             [
@@ -28,7 +37,9 @@ class DatabaseSeeder extends Seeder
                 'password' => 'password',
             ]
         );
-
+// Register all application-specific seeders.
+ // The order matters for relations that depend on other tables.
+       
         $this->call([
             TransactionTypeSeeder::class,
             PondSlotStatusSeeder::class,

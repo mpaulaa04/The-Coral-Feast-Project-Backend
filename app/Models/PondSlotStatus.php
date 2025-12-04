@@ -1,4 +1,14 @@
 <?php
+/**
+ * Class PondSlotStatus
+ *
+ * Represents the status of a pond slot in the system.
+ *
+ * @property int $id
+ * @property string $name Name of the pond slot status
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|PondSlotStatus whereName($value)
+ */
 
 namespace App\Models;
 

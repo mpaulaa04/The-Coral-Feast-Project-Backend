@@ -1,4 +1,20 @@
 <?php
+/**
+ * Class NotificationType
+ *
+ * Represents a type of notification in the system.
+ *
+ * @property int $id
+ * @property string $slug Unique slug for the notification type
+ * @property string $name Name of the notification type
+ * @property string $default_title Default title for notifications of this type
+ * @property string $background_color Background color for notifications of this type
+ * @property string $text_color Text color for notifications of this type
+ * @property string $border_color Border color for notifications of this type
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|NotificationType whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|NotificationType whereName($value)
+ */
 
 namespace App\Models;
 

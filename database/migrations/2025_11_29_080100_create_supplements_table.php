@@ -10,13 +10,26 @@ return new class extends Migration
     {
         Schema::create('supplements', function (Blueprint $table): void {
             $table->id();
-            $table->string('name');
-            $table->string('slug')->unique();
-            $table->string('image_path')->nullable();
-            $table->unsignedTinyInteger('health_boost')->default(0);
-            $table->boolean('hunger_reset')->default(false);
-            $table->unsignedTinyInteger('feeding_limit_bonus')->default(0);
-            $table->json('metadata')->nullable();
+            $table->string('name')
+                ->comment('Name of the supplement');
+            $table->string('slug')
+                ->unique()
+                ->comment('Unique slug identifier for the supplement');
+            $table->string('image_path')
+                ->nullable()
+                ->comment('Path to the image representing the supplement');
+            $table->unsignedTinyInteger('health_boost')
+                ->default(0)
+                ->comment('Amount of health boost provided by the supplement');
+            $table->boolean('hunger_reset')
+                ->default(false)
+                ->comment('Indicates if the supplement resets hunger');
+            $table->unsignedTinyInteger('feeding_limit_bonus')
+                ->default(0)
+                ->comment('Bonus to the feeding limit provided by the supplement');
+            $table->json('metadata')
+                ->nullable()
+                ->comment('Additional metadata for the supplement');
             $table->timestamps();
         });
     }

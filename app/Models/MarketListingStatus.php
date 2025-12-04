@@ -1,4 +1,16 @@
 <?php
+/**
+ * Class MarketListingStatus
+ *
+ * Represents the status of a market listing.
+ *
+ * @property int $id
+ * @property string $slug Unique slug for the status
+ * @property string $label Human-readable label for the status
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|MarketListingStatus whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|MarketListingStatus whereLabel($value)
+ */
 
 namespace App\Models;
 

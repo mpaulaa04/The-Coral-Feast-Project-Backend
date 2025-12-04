@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Class InventorySeeder
+ *
+ * Seeds inventory categories and generates inventory items
+ * for fish, plants, and supplements based on their models.
+ */
 namespace Database\Seeders;
 
 use App\Models\Fish;
@@ -11,8 +16,14 @@ use Illuminate\Database\Seeder;
 
 class InventorySeeder extends Seeder
 {
+    /**
+     * Run the inventory seeds.
+     *
+     * @return void
+     */
     public function run(): void
     {
+         // Define categories and ensure they exist.
         $categories = [
             'fish' => 'Peces',
             'plants' => 'Plantas',
@@ -29,7 +40,7 @@ class InventorySeeder extends Seeder
 
             $categoryIds[$slug] = $category->id;
         }
-
+// --- FISH INVENTORY ITEMS ---
         $fishCategoryId = $categoryIds['fish'];
 
         Fish::all()->each(function (Fish $fish) use ($fishCategoryId): void {
@@ -55,7 +66,7 @@ class InventorySeeder extends Seeder
                 ]
             );
         });
-
+// --- PLANTS ---
         $plants = [
             [
                 'slug' => 'plant-red-algae',
@@ -103,7 +114,7 @@ class InventorySeeder extends Seeder
 
         foreach ($plants as $plant) {
             $effects = $plant['effects'] ?? [];
-
+ // Update/Create plant model
             $plantModel = Plant::updateOrCreate(
                 ['slug' => $plant['slug']],
                 [
@@ -123,7 +134,7 @@ class InventorySeeder extends Seeder
                     ],
                 ]
             );
-
+// Add plant to inventory items
             InventoryItem::updateOrCreate(
                 ['slug' => $plant['slug']],
                 [
@@ -146,7 +157,7 @@ class InventorySeeder extends Seeder
                 ]
             );
         }
-
+// --- SUPPLEMENTS ---
         $supplements = [
             [
                 'slug' => 'supplement-fish-pellets',
@@ -178,6 +189,7 @@ class InventorySeeder extends Seeder
         ];
 
         foreach ($supplements as $supplement) {
+            // Update/Create supplement model
             $supplementModel = Supplement::updateOrCreate(
                 ['slug' => $supplement['slug']],
                 [
@@ -196,7 +208,7 @@ class InventorySeeder extends Seeder
                     ],
                 ]
             );
-
+// Add supplement to inventory items
             InventoryItem::updateOrCreate(
                 ['slug' => $supplement['slug']],
                 [

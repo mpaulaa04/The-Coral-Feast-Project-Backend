@@ -11,7 +11,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('inventory_item_categories', function (Blueprint $table): void {
-            $table->string('slug')->after('name')->nullable();
+            $table->string('slug')
+                ->after('name')
+                ->nullable()
+                ->comment('Unique slug identifier for the inventory item category');
         });
 
         $mappings = [

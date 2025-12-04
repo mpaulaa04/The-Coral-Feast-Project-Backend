@@ -1,4 +1,9 @@
 <?php
+/**
+ * Class PondSlotStatusController
+ *
+ * Handles API requests related to pond slot statuses.
+ */
 
 namespace App\Http\Controllers\Api;
 
@@ -8,6 +13,11 @@ use Illuminate\Http\JsonResponse;
 
 class PondSlotStatusController extends Controller
 {
+    /**
+     * Display a listing of pond slot statuses.
+     *
+     * @return JsonResponse
+     */
     public function index(): JsonResponse
     {
         $statuses = PondSlotStatus::query()

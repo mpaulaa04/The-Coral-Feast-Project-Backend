@@ -1,4 +1,15 @@
 <?php
+/**
+ * Class Wallet
+ *
+ * Represents a user's wallet in the system.
+ *
+ * @property int $id
+ * @property int $user_id ID of the user who owns the wallet
+ * @property int $balance Current balance of the wallet
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|Wallet whereUserId($value)
+ */
 
 namespace App\Models;
 

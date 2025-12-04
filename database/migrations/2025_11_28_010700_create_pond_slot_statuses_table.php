@@ -10,7 +10,9 @@ return new class extends Migration
     {
         Schema::create('pond_slot_statuses', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
+            $table->string('name')
+                ->unique()
+                ->comment('Unique name of the pond slot status');
             $table->timestamps();
         });
     }

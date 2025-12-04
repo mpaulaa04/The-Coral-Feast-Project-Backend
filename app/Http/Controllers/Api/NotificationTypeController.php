@@ -1,4 +1,9 @@
 <?php
+/**
+ * Class NotificationTypeController
+ *
+ * Handles API requests related to notification types.
+ */
 
 namespace App\Http\Controllers\Api;
 
@@ -8,6 +13,11 @@ use Illuminate\Http\JsonResponse;
 
 class NotificationTypeController extends Controller
 {
+    /**
+     * Display a listing of notification types.
+     *
+     * @return JsonResponse
+     */
     public function index(): JsonResponse
     {
         $types = NotificationType::query()

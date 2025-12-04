@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * Class FishSeeder
+ *
+ * Seeds the fish table with predefined species and stats.
+ */
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
@@ -7,6 +11,11 @@ use App\Models\Fish;
 
 class FishSeeder extends Seeder
 {
+     /**
+     * Run the fish seeds.
+     *
+     * @return void
+     */
     public function run(): void
     {
         $fishList = [

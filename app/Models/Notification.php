@@ -1,4 +1,23 @@
 <?php
+/**
+ * Class Notification
+ *
+ * Represents a notification for a user in the system.
+ *
+ * @property int $id
+ * @property int $notification_type_id Type of the notification
+ * @property int $user_id ID of the user who receives the notification
+ * @property string $title Title of the notification
+ * @property string $content Content of the notification
+ * @property bool $is_read Indicates if the notification has been read
+ * @property CarbonInterface|null $read_at Date and time when the notification was read
+ * @property CarbonInterface $created_at Date and time when the notification was created
+ * @property CarbonInterface $updated_at Date and time when the notification was last updated
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|Notification whereIsRead($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Notification whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Notification whereNotificationTypeId($value)
+ */
 
 namespace App\Models;
 

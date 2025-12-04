@@ -16,6 +16,10 @@ class ToolUsage extends Model
         'last_used_at',
     ];
 
+    protected $casts = [
+        'last_used_at' => 'datetime',
+    ];
+
     public const SUPPORTED_TOOLS = [
         'ph' => [
             'label' => 'Regulador de pH',

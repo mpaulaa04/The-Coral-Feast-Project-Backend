@@ -1,4 +1,9 @@
 <?php
+/**
+ * Class FishController
+ *
+ * Handles API requests related to fish resources.
+ */
 
 namespace App\Http\Controllers\Api;
 
@@ -8,6 +13,11 @@ use Illuminate\Http\JsonResponse;
 
 class FishController extends Controller
 {
+    /**
+     * Display a listing of fish.
+     *
+     * @return JsonResponse
+     */
     public function index(): JsonResponse
     {
         $fishList = Fish::query()
@@ -19,6 +29,12 @@ class FishController extends Controller
         return response()->json(['data' => $fishList]);
     }
 
+    /**
+     * Display the specified fish.
+     *
+     * @param Fish $fish
+     * @return JsonResponse
+     */
     public function show(Fish $fish): JsonResponse
     {
         return response()->json([
@@ -26,6 +42,12 @@ class FishController extends Controller
         ]);
     }
 
+    /**
+     * Serialize a Fish model to an array.
+     *
+     * @param Fish $fish
+     * @return array
+     */
     private function serializeFish(Fish $fish): array
     {
         return [

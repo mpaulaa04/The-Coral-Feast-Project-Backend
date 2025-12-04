@@ -9,8 +9,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('inventory_items', function (Blueprint $table): void {
-            $table->foreignId('plant_id')->nullable()->after('fish_id')->constrained('plants')->nullOnDelete();
-            $table->foreignId('supplement_id')->nullable()->after('plant_id')->constrained('supplements')->nullOnDelete();
+            $table->foreignId('plant_id')
+                ->nullable()
+                ->after('fish_id')
+                ->constrained('plants')
+                ->nullOnDelete()
+                ->comment('References the plant associated with the inventory item');
+            $table->foreignId('supplement_id')
+                ->nullable()
+                ->after('plant_id')
+                ->constrained('supplements')
+                ->nullOnDelete()
+                ->comment('References the supplement associated with the inventory item');
         });
     }
 

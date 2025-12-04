@@ -10,8 +10,11 @@ return new class extends Migration
     {
         Schema::create('market_listing_statuses', function (Blueprint $table) {
             $table->id();
-            $table->string('slug')->unique();
-            $table->string('label');
+            $table->string('slug')
+                ->unique()
+                ->comment('Unique slug identifier for the market listing status');
+            $table->string('label')
+                ->comment('Human-readable label for the market listing status');
             $table->timestamps();
         });
     }

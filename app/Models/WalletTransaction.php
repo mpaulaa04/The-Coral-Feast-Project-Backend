@@ -1,4 +1,18 @@
 <?php
+/**
+ * Class WalletTransaction
+ *
+ * Represents a transaction in a user's wallet.
+ *
+ * @property int $id
+ * @property int $wallet_id ID of the associated wallet
+ * @property int $transaction_type_id ID of the transaction type
+ * @property int $amount Amount of the transaction
+ * @property string $event Event or description of the transaction
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|WalletTransaction whereWalletId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|WalletTransaction whereTransactionTypeId($value)
+ */
 
 namespace App\Models;
 

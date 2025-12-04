@@ -13,15 +13,23 @@ return new class extends Migration
             $table->foreignId('notification_type_id')
                 ->constrained('notification_types')
                 ->cascadeOnUpdate()
-                ->restrictOnDelete();
+                ->restrictOnDelete()
+                ->comment('References the type of notification');
             $table->foreignId('user_id')
                 ->constrained('users')
                 ->cascadeOnUpdate()
-                ->cascadeOnDelete();
-            $table->string('title');
-            $table->text('content');
-            $table->boolean('is_read')->default(false);
-            $table->timestamp('read_at')->nullable();
+                ->cascadeOnDelete()
+                ->comment('References the user who receives the notification');
+            $table->string('title')
+                ->comment('Title of the notification');
+            $table->text('content')
+                ->comment('Content of the notification');
+            $table->boolean('is_read')
+                ->default(false)
+                ->comment('Indicates if the notification has been read');
+            $table->timestamp('read_at')
+                ->nullable()
+                ->comment('Timestamp when the notification was read');
             $table->timestamps();
         });
     }

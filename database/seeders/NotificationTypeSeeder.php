@@ -1,4 +1,9 @@
 <?php
+/**
+ * Class NotificationTypeSeeder
+ *
+ * Seeds notification types used for styling in-game alerts.
+ */
 
 namespace Database\Seeders;
 
@@ -7,8 +12,14 @@ use Illuminate\Database\Seeder;
 
 class NotificationTypeSeeder extends Seeder
 {
+    /**
+     * Run the notification type seeds.
+     *
+     * @return void
+     */
     public function run(): void
     {
+        // Predefined notification types with UI styling.
         $types = [
             'default' => [
                 'name' => 'General',
@@ -46,7 +57,7 @@ class NotificationTypeSeeder extends Seeder
                 'border_color' => '#553C9A',
             ],
         ];
-
+ // Seed or update each notification type.
         foreach ($types as $slug => $attributes) {
             NotificationType::query()->updateOrCreate(
                 ['slug' => $slug],

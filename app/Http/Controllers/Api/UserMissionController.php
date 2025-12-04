@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Class UserMissionController
+ *
+ * Handles API requests related to mission progress, mission events,
+ * and mission reward claims for a specific user.
+ */
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
@@ -14,6 +19,13 @@ use Illuminate\Support\Facades\DB;
 
 class UserMissionController extends Controller
 {
+
+    /**
+     * Retrieve a list of missions with progress and level information for the user.
+     *
+     * @param User $user
+     * @return JsonResponse
+     */
     public function index(User $user): JsonResponse
     {
         $missions = Mission::query()
@@ -48,6 +60,13 @@ class UserMissionController extends Controller
         return response()->json(['data' => $data]);
     }
 
+    /**
+     * Record a mission-related event and update mission progress for the user.
+     *
+     * @param Request $request
+     * @param User $user
+     * @return JsonResponse
+     */
     public function recordEvent(Request $request, User $user): JsonResponse
     {
         $validated = $request->validate([
@@ -113,7 +132,13 @@ class UserMissionController extends Controller
 
         return response()->json(['data' => $updated]);
     }
-
+/**
+     * Claim the reward for a completed mission level and update user progression.
+     *
+     * @param User $user
+     * @param Mission $mission
+     * @return JsonResponse
+     */
     public function claim(User $user, Mission $mission): JsonResponse
     {
         $userMission = UserMission::firstOrCreate(
@@ -190,7 +215,13 @@ class UserMissionController extends Controller
             ],
         ]);
     }
-
+/**
+     * Format mission and user mission data into a consistent API response structure.
+     *
+     * @param Mission $mission
+     * @param UserMission $userMission
+     * @return array<string, mixed>
+     */
     private function formatMission(Mission $mission, UserMission $userMission): array
     {
         $level = max(1, (int) $userMission->current_level);
@@ -218,7 +249,13 @@ class UserMissionController extends Controller
             'levels' => $mission->levels(),
         ];
     }
-
+/**
+     * Ensure the user's mission state is valid for the mission's configuration.
+     *
+     * @param Mission $mission
+     * @param UserMission $userMission
+     * @return void
+     */
     private function ensureUserMissionState(Mission $mission, UserMission $userMission): void
     {
         $maxLevel = $this->maxLevelForMission($mission);
@@ -255,7 +292,14 @@ class UserMissionController extends Controller
             $userMission->save();
         }
     }
-
+/**
+     * Determine if a mission should be reset based on daily rules.
+     *
+     * @param Mission $mission
+     * @param UserMission $userMission
+     * @param int $maxLevel
+     * @return bool
+     */
     private function shouldResetForNewDay(Mission $mission, UserMission $userMission, int $maxLevel): bool
     {
         if ($userMission->current_level < $maxLevel) {
@@ -270,13 +314,24 @@ class UserMissionController extends Controller
 
         return $claimedAt->lt(Carbon::now()->startOfDay());
     }
-
+/**
+     * Determine if a mission should be hidden for the user.
+     *
+     * @param Mission $mission
+     * @param UserMission $userMission
+     * @return bool
+     */
     private function shouldHideMission(Mission $mission, UserMission $userMission): bool
     {
         return $userMission->current_level >= $this->maxLevelForMission($mission)
             && $userMission->claimed_at !== null;
     }
-
+/**
+     * Get the maximum number of levels available for a mission.
+     *
+     * @param Mission $mission
+     * @return int
+     */
     private function maxLevelForMission(Mission $mission): int
     {
         $levels = $mission->levels();
@@ -287,7 +342,13 @@ class UserMissionController extends Controller
 
         return 5;
     }
-
+/**
+     * Retrieve level configuration details for a specific level of a mission.
+     *
+     * @param Mission $mission
+     * @param int $level
+     * @return array<string, mixed>
+     */
     private function levelConfig(Mission $mission, int $level): array
     {
         $levels = $mission->levels();
@@ -308,7 +369,13 @@ class UserMissionController extends Controller
             'reward' => $mission->reward,
         ];
     }
-
+/**
+     * Determine the target amount required to complete a mission level.
+     *
+     * @param Mission $mission
+     * @param int $level
+     * @return int
+     */
     private function levelTarget(Mission $mission, int $level): int
     {
         $config = $this->levelConfig($mission, max(1, $level));
@@ -316,6 +383,13 @@ class UserMissionController extends Controller
         return max(1, (int) ($config['target'] ?? $mission->target_amount ?? 1));
     }
 
+    /**
+     * Determine the reward amount granted for a mission level.
+     *
+     * @param Mission $mission
+     * @param int $level
+     * @return int
+     */
     private function levelReward(Mission $mission, int $level): int
     {
         $config = $this->levelConfig($mission, max(1, $level));

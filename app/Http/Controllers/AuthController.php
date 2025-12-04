@@ -1,4 +1,9 @@
 <?php
+/**
+ * Class AuthController
+ *
+ * Handles user authentication and session initialization processes.
+ */
 
 namespace App\Http\Controllers;
 
@@ -8,6 +13,12 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+     /**
+     * Authenticate a user and initialize required game resources.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function login(Request $request)
     {
         $credentials = $request->validate([

@@ -1,4 +1,21 @@
 <?php
+/**
+ * Class User
+ *
+ * Represents a user in the system.
+ *
+ * @property int $id
+ * @property string $name Name of the user
+ * @property string $email Email address of the user
+ * @property string|null $email_verified_at Date and time when the email was verified
+ * @property string $password Password hash
+ * @property string|null $remember_token Token for remembering the user
+ * @property Carbon|null $created_at Date and time when the user was created
+ * @property Carbon|null $updated_at Date and time when the user was last updated
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereEmail($value)
+ */
 
 namespace App\Models;
 

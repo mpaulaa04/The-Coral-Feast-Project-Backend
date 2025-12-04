@@ -1,4 +1,9 @@
 <?php
+/**
+ * Class StatsController
+ *
+ * Handles API requests related to user statistics and leaderboard data.
+ */
 
 namespace App\Http\Controllers\Api;
 
@@ -10,6 +15,12 @@ use Illuminate\Http\Request;
 
 class StatsController extends Controller
 {
+    /**
+     * Display a listing of user statistics and leaderboard data.
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function index(Request $request): JsonResponse
     {
         $activeStatusIds = PondSlotStatus::query()

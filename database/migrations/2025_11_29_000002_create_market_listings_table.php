@@ -10,21 +10,34 @@ return new class extends Migration
     {
         Schema::create('market_listings', function (Blueprint $table) {
             $table->id();
-            $table->string('type');
+            $table->string('type')
+                ->comment('Type of the market listing');
             $table->foreignId('market_listing_status_id')
                 ->constrained('market_listing_statuses')
                 ->cascadeOnUpdate()
-                ->restrictOnDelete();
+                ->restrictOnDelete()
+                ->comment('References the status of the market listing');
             $table->foreignId('plants_id')
                 ->nullable()
                 ->constrained('plants')
                 ->nullOnDelete()
-                ->cascadeOnUpdate();
-            $table->unsignedInteger('price')->nullable();
-            $table->decimal('multiplier', 8, 2)->default(1);
-            $table->timestamp('starts_at')->nullable();
-            $table->timestamp('ends_at')->nullable();
-            $table->json('payload')->nullable();
+                ->cascadeOnUpdate()
+                ->comment('References the plant associated with the listing');
+            $table->unsignedInteger('price')
+                ->nullable()
+                ->comment('Price of the market listing');
+            $table->decimal('multiplier', 8, 2)
+                ->default(1)
+                ->comment('Multiplier value for the listing');
+            $table->timestamp('starts_at')
+                ->nullable()
+                ->comment('Start time of the market listing');
+            $table->timestamp('ends_at')
+                ->nullable()
+                ->comment('End time of the market listing');
+            $table->json('payload')
+                ->nullable()
+                ->comment('Additional data for the market listing');
             $table->timestamps();
 
             $table->unique('type');

@@ -10,11 +10,17 @@ return new class extends Migration
     {
         Schema::table('pond_slots', function (Blueprint $table) {
             if (! Schema::hasColumn('pond_slots', 'has_water_quality_issue')) {
-                $table->boolean('has_water_quality_issue')->default(false)->after('has_temperature_issue');
+                $table->boolean('has_water_quality_issue')
+                    ->default(false)
+                    ->after('has_temperature_issue')
+                    ->comment('Indicates if the pond slot has a water quality issue');
             }
 
             if (! Schema::hasColumn('pond_slots', 'last_cleaned_at')) {
-                $table->timestamp('last_cleaned_at')->nullable()->after('last_ph_adjusted_at');
+                $table->timestamp('last_cleaned_at')
+                    ->nullable()
+                    ->after('last_ph_adjusted_at')
+                    ->comment('Timestamp of the last cleaning performed on the pond slot');
             }
         });
     }

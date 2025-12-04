@@ -10,11 +10,17 @@ return new class extends Migration
     {
         Schema::table('pond_slots', function (Blueprint $table): void {
             if (! Schema::hasColumn('pond_slots', 'plant_effect_state')) {
-                $table->json('plant_effect_state')->nullable()->after('plant_placed_at');
+                $table->json('plant_effect_state')
+                    ->nullable()
+                    ->after('plant_placed_at')
+                    ->comment('Stores the current effect state of the plant in the slot');
             }
 
             if (! Schema::hasColumn('pond_slots', 'plant_effect_expires_at')) {
-                $table->timestamp('plant_effect_expires_at')->nullable()->after('plant_effect_state');
+                $table->timestamp('plant_effect_expires_at')
+                    ->nullable()
+                    ->after('plant_effect_state')
+                    ->comment('Timestamp when the plant effect expires in the slot');
             }
         });
     }

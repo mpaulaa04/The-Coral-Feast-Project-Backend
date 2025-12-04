@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Class UserController
+ *
+ * Handles CRUD operations for user accounts, including creation,
+ * retrieval, updates, and deletion of user resources.
+ */
 namespace App\Http\Controllers;
 
 use App\Models\User;
@@ -9,7 +14,9 @@ use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a list of all users ordered by creation date.
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
@@ -18,8 +25,10 @@ class UserController extends Controller
         );
     }
 
-    /**
-     * Show the form for creating a new resource.
+     /**
+     * Show the form for creating a new user resource. (Not used in API)
+     *
+     * @return void
      */
     public function create()
     {
@@ -27,7 +36,10 @@ class UserController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created user in the database.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -51,7 +63,10 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified user resource.
+     *
+     * @param User $user
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show(User $user)
     {
@@ -59,15 +74,22 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified user. (Not used in API)
+     *
+     * @param string $id
+     * @return void
      */
     public function edit(string $id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
+     /**
+     * Update the specified user resource in storage.
+     *
+     * @param Request $request
+     * @param User $user
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, User $user)
     {
@@ -89,7 +111,10 @@ class UserController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete the specified user resource from storage.
+     *
+     * @param User $user
+     * @return \Illuminate\Http\Response
      */
     public function destroy(User $user)
     {

@@ -10,10 +10,18 @@ return new class extends Migration
     {
         Schema::create('tool_usages', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->string('tool_slug', 50);
-            $table->unsignedBigInteger('usage_count')->default(0);
-            $table->timestamp('last_used_at')->nullable();
+            $table->foreignId('user_id')
+                ->constrained()
+                ->cascadeOnDelete()
+                ->comment('References the user who used the tool');
+            $table->string('tool_slug', 50)
+                ->comment('Slug identifier for the tool');
+            $table->unsignedBigInteger('usage_count')
+                ->default(0)
+                ->comment('Total number of times the tool was used by the user');
+            $table->timestamp('last_used_at')
+                ->nullable()
+                ->comment('Timestamp of the last usage of the tool by the user');
             $table->timestamps();
 
             $table->unique(['user_id', 'tool_slug']);

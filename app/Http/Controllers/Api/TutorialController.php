@@ -1,4 +1,9 @@
 <?php
+/**
+ * Class TutorialController
+ *
+ * Handles API requests related to user tutorial progress.
+ */
 
 namespace App\Http\Controllers\Api;
 
@@ -9,6 +14,13 @@ use Illuminate\Http\Request;
 
 class TutorialController extends Controller
 {
+    /**
+     * Display the tutorial progress for a user.
+     *
+     * @param Request $request
+     * @param User $user
+     * @return JsonResponse
+     */
     public function show(Request $request, User $user): JsonResponse
     {
         return response()->json([
@@ -17,6 +29,13 @@ class TutorialController extends Controller
         ]);
     }
 
+    /**
+     * Update the tutorial progress for a user.
+     *
+     * @param Request $request
+     * @param User $user
+     * @return JsonResponse
+     */
     public function update(Request $request, User $user): JsonResponse
     {
         $validated = $request->validate([

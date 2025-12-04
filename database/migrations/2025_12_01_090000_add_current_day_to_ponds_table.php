@@ -10,7 +10,10 @@ return new class extends Migration
     {
         Schema::table('ponds', function (Blueprint $table): void {
             if (! Schema::hasColumn('ponds', 'current_day')) {
-                $table->unsignedInteger('current_day')->default(1)->after('status');
+                $table->unsignedInteger('current_day')
+                    ->default(1)
+                    ->after('status')
+                    ->comment('Tracks the current day of the pond');
             }
         });
     }

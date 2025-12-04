@@ -1,4 +1,17 @@
 <?php
+/**
+ * Class Fish
+ *
+ * Represents a fish in the system.
+ *
+ * @property int $id
+ * @property string $name Name of the fish
+ * @property string $species Species of the fish
+ * @property int $pond_id Associated pond ID
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|Fish whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Fish whereSpecies($value)
+ */
 
 namespace App\Models;
 

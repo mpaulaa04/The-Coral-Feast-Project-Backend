@@ -12,8 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->boolean('tutorial_completed')->default(false);
-            $table->string('tutorial_step')->nullable();
+            $table->boolean('tutorial_completed')
+                ->default(false)
+                ->comment('Indicates if the user has completed the tutorial');
+            $table->string('tutorial_step')
+                ->nullable()
+                ->comment('Stores the current tutorial step for the user');
         });
     }
 

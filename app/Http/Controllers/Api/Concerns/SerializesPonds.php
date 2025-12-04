@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Trait SerializesPonds
+ *
+ * Provides helper methods to serialize pond and pond slot data
+ * into consistent array structures for API responses.
+ */
 namespace App\Http\Controllers\Api\Concerns;
 
 use App\Models\Pond;
@@ -7,6 +12,12 @@ use App\Models\PondSlot;
 
 trait SerializesPonds
 {
+     /**
+     * Serialize a pond slot and its related fish, plant, and status data.
+     *
+     * @param PondSlot $slot
+     * @return array<string, mixed>
+     */
     protected function serializeSlot(PondSlot $slot): array
     {
         $this->expirePlantIfNeeded($slot);
@@ -92,6 +103,13 @@ trait SerializesPonds
         ];
     }
 
+    /**
+     * Ensure that plant effects are correctly expired or updated
+     * based on configured lifetime rules for the slot.
+     *
+     * @param PondSlot $slot
+     * @return void
+     */
     protected function expirePlantIfNeeded(PondSlot $slot): void
     {
         $maxLifetime = max(0, (int) $this->plantEffectMaxLifetimeSeconds());
@@ -153,7 +171,11 @@ trait SerializesPonds
 
         $slot->unsetRelation('plant');
     }
-
+/**
+     * Get the max lifetime allowed for plant effects in seconds.
+     *
+     * @return int
+     */
     protected function plantEffectMaxLifetimeSeconds(): int
     {
         $constantQualifiedName = static::class . '::MAX_PLANT_EFFECT_DURATION_SECONDS';
@@ -164,7 +186,12 @@ trait SerializesPonds
 
         return 30;
     }
-
+ /**
+     * Serialize an entire pond along with its slot summary data.
+     *
+     * @param Pond $pond
+     * @return array<string, mixed>
+     */
     protected function serializePond(Pond $pond): array
     {
         $pond->loadMissing(['slots.fish', 'slots.status', 'slots.plant']);

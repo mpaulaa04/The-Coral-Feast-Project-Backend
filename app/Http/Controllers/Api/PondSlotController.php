@@ -10,6 +10,7 @@ use App\Models\Pond;
 use App\Models\PondSlot;
 use App\Models\PondSlotStatus;
 use App\Models\Supplement;
+use App\Models\ToolUsage;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -523,6 +524,8 @@ class PondSlotController extends Controller
 
         $slot->forceFill($updates)->save();
 
+        $this->registerToolUsage($pond->user_id, $normalized);
+
         return response()->json([
             'message' => $config['message'],
             'data' => $this->serializeSlot($slot->fresh()->load(['fish', 'status', 'plant'])),
@@ -582,6 +585,31 @@ class PondSlotController extends Controller
         }
 
         return $userId;
+    }
+
+    private function registerToolUsage(int $userId, string $issue): void
+    {
+        $slugMap = [
+            'ph' => 'ph',
+            'oxygen' => 'oxygen',
+            'temperature' => 'temperature',
+            'water-quality' => 'water_quality',
+        ];
+
+        $slug = $slugMap[$issue] ?? null;
+
+        if (! $slug || ! isset(ToolUsage::SUPPORTED_TOOLS[$slug])) {
+            return;
+        }
+
+        $usage = ToolUsage::firstOrNew([
+            'user_id' => $userId,
+            'tool_slug' => $slug,
+        ]);
+
+        $usage->usage_count = max(0, (int) $usage->usage_count) + 1;
+        $usage->last_used_at = now();
+        $usage->save();
     }
 
     private function stageDurationFor(PondSlot $slot, string $status): int

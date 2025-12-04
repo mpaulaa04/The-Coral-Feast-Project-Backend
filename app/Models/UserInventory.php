@@ -1,4 +1,18 @@
 <?php
+/**
+ * Class UserInventory
+ *
+ * Represents a user's inventory item in the system.
+ *
+ * @property int $id
+ * @property int $user_id ID of the user who owns the inventory
+ * @property int $inventory_item_id ID of the inventory item
+ * @property int $quantity Quantity of the item
+ * @property bool $is_favorite Indicates if the item is marked as favorite
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|UserInventory whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserInventory whereInventoryItemId($value)
+ */
 
 namespace App\Models;
 

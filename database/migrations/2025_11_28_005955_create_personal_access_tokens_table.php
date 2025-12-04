@@ -13,12 +13,22 @@ return new class extends Migration
     {
         Schema::create('personal_access_tokens', function (Blueprint $table) {
             $table->id();
-            $table->morphs('tokenable');
-            $table->text('name');
-            $table->string('token', 64)->unique();
-            $table->text('abilities')->nullable();
-            $table->timestamp('last_used_at')->nullable();
-            $table->timestamp('expires_at')->nullable()->index();
+            $table->morphs('tokenable'); // Laravel morphs: tokenable_id, tokenable_type
+            $table->text('name')
+                ->comment('Name of the access token');
+            $table->string('token', 64)
+                ->unique()
+                ->comment('Unique token string');
+            $table->text('abilities')
+                ->nullable()
+                ->comment('JSON array of token abilities');
+            $table->timestamp('last_used_at')
+                ->nullable()
+                ->comment('Timestamp when the token was last used');
+            $table->timestamp('expires_at')
+                ->nullable()
+                ->index()
+                ->comment('Expiration timestamp for the token');
             $table->timestamps();
         });
     }

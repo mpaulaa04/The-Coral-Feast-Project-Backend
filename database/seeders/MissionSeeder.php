@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Class MissionSeeder
+ *
+ * Seeds all missions with their multi-level configuration,
+ * rewards, targets, and event keys used by the mission system.
+ */
 namespace Database\Seeders;
 
 use App\Models\Mission;
@@ -9,11 +14,15 @@ use Illuminate\Database\Seeder;
 class MissionSeeder extends Seeder
 {
     use WithoutModelEvents;
-
+  /**
+     * Run the mission seeds.
+     *
+     * @return void
+     */
     public function run(): void
     {
         $defaultRewardImage = './assets/img/recompenza.png';
-
+// All mission definitions with levels, rewards, and targets.
         $missions = [
             [
                 'code' => 'pond_stock_first',
@@ -196,7 +205,7 @@ class MissionSeeder extends Seeder
                 ],
             ],
         ];
-
+// Seed or update missions
         foreach ($missions as $payload) {
             Mission::updateOrCreate(
                 ['code' => $payload['code']],

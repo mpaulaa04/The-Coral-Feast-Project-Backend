@@ -1,4 +1,9 @@
 <?php
+/**
+ * Class PondController
+ *
+ * Handles API requests related to ponds and their management.
+ */
 
 namespace App\Http\Controllers\Api;
 
@@ -13,6 +18,12 @@ class PondController extends Controller
 {
     use SerializesPonds;
 
+    /**
+     * Display a listing of ponds for a user.
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function index(Request $request): JsonResponse
     {
         $userId = $this->requireUserId($request);
@@ -38,6 +49,12 @@ class PondController extends Controller
         return response()->json(['data' => $ponds]);
     }
 
+    /**
+     * Store a newly created pond.
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function store(Request $request): JsonResponse
     {
         $data = $request->validate([
@@ -59,6 +76,13 @@ class PondController extends Controller
         ], 201);
     }
 
+    /**
+     * Display the specified pond.
+     *
+     * @param Request $request
+     * @param Pond $pond
+     * @return JsonResponse
+     */
     public function show(Request $request, Pond $pond): JsonResponse
     {
         $this->assertUserAccess($request, $pond);
@@ -68,6 +92,13 @@ class PondController extends Controller
         ]);
     }
 
+    /**
+     * Update the specified pond.
+     *
+     * @param Request $request
+     * @param Pond $pond
+     * @return JsonResponse
+     */
     public function update(Request $request, Pond $pond): JsonResponse
     {
         $this->assertUserAccess($request, $pond);
@@ -85,6 +116,13 @@ class PondController extends Controller
         ]);
     }
 
+    /**
+     * Remove the specified pond.
+     *
+     * @param Request $request
+     * @param Pond $pond
+     * @return JsonResponse
+     */
     public function destroy(Request $request, Pond $pond): JsonResponse
     {
         $this->assertUserAccess($request, $pond);

@@ -10,10 +10,19 @@ return new class extends Migration
     {
         Schema::create('wallet_transactions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('wallet_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('transaction_type_id')->constrained()->cascadeOnDelete();
-            $table->bigInteger('amount');
-            $table->string('event')->nullable();
+            $table->foreignId('wallet_id')
+                ->constrained()
+                ->cascadeOnDelete()
+                ->comment('References the wallet associated with the transaction');
+            $table->foreignId('transaction_type_id')
+                ->constrained()
+                ->cascadeOnDelete()
+                ->comment('References the type of transaction');
+            $table->bigInteger('amount')
+                ->comment('Transaction amount, positive or negative');
+            $table->string('event')
+                ->nullable()
+                ->comment('Event or context for the transaction');
             $table->timestamps();
         });
     }

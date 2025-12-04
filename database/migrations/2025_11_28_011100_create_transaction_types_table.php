@@ -10,7 +10,9 @@ return new class extends Migration
     {
         Schema::create('transaction_types', function (Blueprint $table) {
             $table->id();
-            $table->string('transaction')->unique();
+            $table->string('transaction')
+                ->unique()
+                ->comment('Unique name of the transaction type');
             $table->timestamps();
         });
     }
